@@ -34,12 +34,14 @@ def functionName():
 
 
 #Homework   add put and post and try to use the response model 
-@app.put("/items", response_model=ResponseModel)
-def put_iems():
-    items=[Item(name="item2",price=15.0),
-           Item(name="item3",price=30.0)]
-    return {"items":items}
+@app.put("/items/{item_name}", response_model=ResponseModel)
+def put_items(item_name: str, updated_item: Item):
+    for i, item in enumerate(items):
+        if item.name == item_name:
+            items[i] = updated_item
+            return {"items": items, "count": len(items)}
 
-@app.get("/items/", response_model=ResponseModel)
-def get_items(namec):
-    return {"items":items}
+    return {"items": items, "count": len(items)}
+
+
+
